@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { auth } from "../../firebase";
+import { useNavigate } from 'react-router-dom';
 
 //here we grap the email from local storage for that we use "useEffect hook"
-const RegisterComplete = ({history}) => {
+const RegisterComplete = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  let navigate = useNavigate();
 
     useEffect(()=>{
      // console.log(window.localStorage.getItem('emailForRegistration'))//
@@ -43,7 +45,7 @@ const RegisterComplete = ({history}) => {
             console.log("user", user, "idTokenResult", idTokenResult)
             //redux store
             //redirect
-            history.push("/")
+            navigate("/")
         }
 
     }catch(error){

@@ -10,6 +10,11 @@ import {
 } from "@ant-design/icons";
 import {Link} from "react-router-dom";
 
+//access firebase directly from actual package
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+
 const { SubMenu, Item } = Menu;
 const Header = () => {
   const [current, setCurrent] = useState("home");
@@ -33,8 +38,9 @@ const Header = () => {
 
       {/* submenu means dropdown */}
       <SubMenu icon={<SettingOutlined />} title="USername">
-        <Menu.Item key="setting:1">Option 1</Menu.Item>
-        <Menu.Item key="setting:2">Option 2</Menu.Item>
+        <Item key="setting:1">Option 1</Item>
+        <Item key="setting:2">Option 2</Item>
+        <Item >Logout</Item>
       </SubMenu>
     </Menu>
   );
