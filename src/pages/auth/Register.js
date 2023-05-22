@@ -37,6 +37,7 @@ const Register = () => {
         type="email"
         className="form-control"
         value={email}
+        placeholder="Your email"
         onChange={(e) => setEmail(e.target.value)}
         autoFocus //when the user land this page first time this input field will be active by default
       >  
