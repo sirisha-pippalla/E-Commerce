@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth, googleAuthProvider } from "../../firebase";
 import { toast } from "react-toastify";
 import { Button } from "antd";
 import {MailOutlined, GoogleOutlined} from "@ant-design/icons"
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 
 
 
@@ -14,6 +14,14 @@ const Login = () => {
   const[loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const {user} = useSelector((state)=> ({...state}))
+
+  useEffect(()=>{
+    if(user && user.token){
+      navigate("/")
+    }
+  }, [user])
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -131,6 +139,10 @@ const Login = () => {
           icon={<GoogleOutlined/>}
           size="large"
           >Login with Google</Button>
+
+          <Link to='/forgot/password' className="text-danger" style={{float:"right", textDecoration:"none"}}>
+            Forgot Password
+          </Link>
         </div>
       </div>
     </div>

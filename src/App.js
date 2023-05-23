@@ -11,6 +11,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Header from "./components/nav/Header";
 import RegisterComplete from "./pages/auth/RegisterComplete";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 //here we access friebase auth function to access the currently logedin user
 import {auth} from "./firebase";
 //dispatching the action and payload so that we can update the redux store. for that we can access the useDispatch hook from react-redux
@@ -63,6 +64,7 @@ const App = () => {
       <Route path = "/login" element={<Login/>}/>
       <Route path = "/register" element={<Register/>}/>
       <Route path = "/register/complete" element={<RegisterComplete/>}/>
+      <Route path = "/forgot/password" element={<ForgotPassword/>}/>
     </Routes>
     </>
   );

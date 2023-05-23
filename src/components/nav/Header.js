@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { Menu } from "antd";
 import {
@@ -22,6 +22,11 @@ const { SubMenu, Item } = Menu;
 const Header = () => {
   const [current, setCurrent] = useState("home");
   const dispatch = useDispatch()
+  const {user} = useSelector((state)=>({...state}))
+
+  //useDispatch --> whenever we want dispatch the data to the redux state so that update the redux state-->update the state
+
+  //useSelector-->intead of updating the state we want to get the data from the state for eg:we have a user in that state we get that user. useSelector takes a function as argument
   let navigate = useNavigate();
 
   const handleClick = (e) => {
@@ -41,22 +46,29 @@ const Header = () => {
   return (
     <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
       <Item key="home" icon={<AppstoreOutlined />}>
-        <Link to="/">Home</Link>
+        <Link to="/" style={{ textDecoration:"none"}}>Home</Link>
       </Item>
-      <Item key="register" icon={<UserAddOutlined/>}>
-        <Link to="register">Register</Link>
-      </Item>
-      <Item key="login" icon={<UserOutlined/>} style={{float:"right"}}>
-        <Link to="login">Login</Link>
-      </Item>
+      {!user && <Item key="register" icon={<UserAddOutlined/>}>
+        <Link to="register" style={{ textDecoration:"none"}}>Register</Link>
+      </Item>}
+
+      {!user && <Item key="login" icon={<UserOutlined/>} style={{float:"right", textDecoration:"none"}}>
+        <Link to="login" style={{ textDecoration:"none"}}>Login</Link>
+      </Item>}
      
 
       {/* submenu means dropdown */}
-      <SubMenu icon={<SettingOutlined />} title="USername">
+      {user && (
+        <SubMenu
+         icon={<SettingOutlined />} 
+         title={user.email && user.email.split('@')[0]} //getting user name from email what email is used to loggedin, in this we use split method, in this method the email is split from '@' and then we getting array eg:siri@gmail.com-->['siri', '@gmail.com']
+         style={{float:"right"}}>
         <Item key="setting:1">Option 1</Item>
         <Item key="setting:2">Option 2</Item>
         <Item icon={<LogoutOutlined/>} onClick={logout}>Logout</Item>
       </SubMenu>
+      )}
+      
     </Menu>
   );
 };
