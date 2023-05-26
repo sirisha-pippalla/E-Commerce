@@ -16,6 +16,9 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import {auth} from "./firebase";
 //dispatching the action and payload so that we can update the redux store. for that we can access the useDispatch hook from react-redux
 import {useDispatch} from "react-redux";
+import { currentUser } from "./functions/auth";
+import History from "./pages/user/History";
+import UserRoute from "./components/routes/UserRoute";
 
 //when this component mount means when ever there was a change we want to access this firebase auth currnt user auth state so for that we use useEffect 
 
@@ -40,13 +43,20 @@ const App = () => {
 
         //once we get the token we need to dispatch this token to redux store
         //in dispatch method we can give the type and payload(its should be same what we are mention in userReducer file)
-        dispatch({
-          type:"LOGGED_IN_USER",
-          payload:{
-            email:user.email,
-            token:idTokenResult.token
-          }
+        currentUser(idTokenResult.token)
+        .then((res)=>{
+          dispatch({
+            type: "LOGGED_IN_USER",
+            payload: {
+              name : res.data.name,
+              email : res.data.email,
+              token : idTokenResult.token,
+              role: res.data.role,
+              _id : res.data._id,
+            },
+          });
         })
+        .catch((err)=>console.log(err))
       }
     });
     //cleanup
@@ -57,6 +67,7 @@ const App = () => {
 
   return (
     <>
+     
     <Header/>
     <ToastContainer/>
     <Routes>
@@ -65,7 +76,10 @@ const App = () => {
       <Route path = "/register" element={<Register/>}/>
       <Route path = "/register/complete" element={<RegisterComplete/>}/>
       <Route path = "/forgot/password" element={<ForgotPassword/>}/>
+      <Route path = "/user/history" element={<UserRoute><History/></UserRoute>}/> 
     </Routes>
+    
+    
     </>
   );
 }
